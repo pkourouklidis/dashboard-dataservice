@@ -7,14 +7,17 @@
 
 package com.bt.betalab.callcentre.dashboard.dataservice.api;
 
-public class CustomerPrediction {
-    private boolean happy;
+import java.util.ArrayList;
+import java.util.List;
 
-    public boolean isHappy() {
-        return happy;
+public class CustomerPrediction {
+    List<PredictionResult> outputs = new ArrayList<>();
+
+    public void setOutputs(List<PredictionResult> outputs) {
+        this.outputs = outputs;
     }
 
-    public void setHappy(boolean happy) {
-        this.happy = happy;
+    public boolean isHappy() {
+        return outputs.get(0).isHappy();
     }
 }

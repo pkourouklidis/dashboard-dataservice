@@ -25,7 +25,7 @@ public class DataServiceController {
     @Autowired
     DataService service;
 
-    @PostMapping(produces = "application/json", value = "report")
+    @PostMapping(produces = "application/json", value = "api/v1/report")
     public ResponseEntity reportCallData(@RequestBody CallData request)  {
         try {
             service.reportCallData(request);
@@ -35,7 +35,7 @@ public class DataServiceController {
         }
     }
 
-    @GetMapping(produces = "application/json", value = "simulation/{id}")
+    @GetMapping(produces = "application/json", value = "api/v1/simulation/{id}")
     public ResponseEntity<SimulationData> getSimulationData(@PathVariable String id, @RequestParam int count)  {
         try {
             if (service.simulationExists(id)) {
@@ -47,7 +47,7 @@ public class DataServiceController {
         }
     }
 
-    @GetMapping(produces = "application/json", value = "simulation")
+    @GetMapping(produces = "application/json", value = "api/v1/simulation")
     public ResponseEntity<List<SimulationSummary>> getSimulations()  {
         try {
             return ResponseEntity.ok(service.getSimulations());

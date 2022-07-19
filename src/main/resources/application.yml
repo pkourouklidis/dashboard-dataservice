@@ -10,6 +10,16 @@ spring:
     basic:
       enabled: false
     oauth2:
+      client:
+        registration:
+          custom:
+            authorization-grant-type: client_credentials
+            client-id: callcentre-data-project
+            client-secret: '112f8079-ff81-4092-8cd0-a4b6356da81f'
+            provider: customprovider
+        provider:
+          customprovider:
+            token-uri: https://keycloak.auth.betalab.rp.bt.com/auth/realms/master/protocol/openid-connect/token
       resourceserver:
         jwt:
           issuer-uri: https://keycloak.auth.betalab.rp.bt.com/auth/realms/master
@@ -65,6 +75,9 @@ spring:
       initial-size: 1
 server:
   port: 8080
+
+dataservice:
+  aiServiceUrl: http://callcenter.kubeflow-user-example-com.panoptes.uk/v2/models/callcenter/infer
 
 
 ---

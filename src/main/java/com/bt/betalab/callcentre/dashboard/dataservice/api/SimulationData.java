@@ -8,11 +8,12 @@
 package com.bt.betalab.callcentre.dashboard.dataservice.api;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 public class SimulationData {
     private String simulationId;
-    private Timestamp startTime;
+    private Instant startTime;
     private int workers = 0;
     private int totalCalls = 0;
     private int bouncedCalls = 0;
@@ -41,11 +42,11 @@ public class SimulationData {
         this.simulationId = simulationId;
     }
 
-    public Timestamp getStartTime() {
+    public Instant getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(Instant startTime) {
         this.startTime = startTime;
     }
 

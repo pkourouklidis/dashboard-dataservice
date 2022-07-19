@@ -7,7 +7,20 @@
 
 package com.bt.betalab.callcentre.dashboard.dataservice.api;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="customer")
 public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
+    @OneToOne(mappedBy = "customer")
+    private CallData callData;
+
     private boolean isHappyToWait;
     private boolean isHappyToWaitForService;
     private boolean isUnderstanding;
@@ -15,43 +28,43 @@ public class Customer {
 
     private boolean isPredictedToBeHappy;
 
-    public boolean isHappyToWait() {
+    public boolean getIsHappyToWait() {
         return isHappyToWait;
     }
 
-    public void setHappyToWait(boolean happyToWait) {
+    public void setIsHappyToWait(boolean happyToWait) {
         isHappyToWait = happyToWait;
     }
 
-    public boolean isHappyToWaitForService() {
+    public boolean getIsHappyToWaitForService() {
         return isHappyToWaitForService;
     }
 
-    public void setHappyToWaitForService(boolean happyToWaitForService) {
+    public void setIsHappyToWaitForService(boolean happyToWaitForService) {
         isHappyToWaitForService = happyToWaitForService;
     }
 
-    public boolean isUnderstanding() {
+    public boolean getIsUnderstanding() {
         return isUnderstanding;
     }
 
-    public void setUnderstanding(boolean understanding) {
+    public void setIsUnderstanding(boolean understanding) {
         isUnderstanding = understanding;
     }
 
-    public boolean isHappy() {
+    public boolean getIsHappy() {
         return isHappy;
     }
 
-    public void setHappy(boolean happy) {
+    public void setIsHappy(boolean happy) {
         isHappy = happy;
     }
 
-    public boolean isPredictedToBeHappy() {
+    public boolean getIsPredictedToBeHappy() {
         return isPredictedToBeHappy;
     }
 
-    public void setPredictedToBeHappy(boolean predictedToBeHappy) {
+    public void setIsPredictedToBeHappy(boolean predictedToBeHappy) {
         isPredictedToBeHappy = predictedToBeHappy;
     }
 }

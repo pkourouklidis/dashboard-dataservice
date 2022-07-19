@@ -8,31 +8,38 @@
 package com.bt.betalab.callcentre.dashboard.dataservice.api;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Entity
-@Table(name = "CALLS")
+@Table(name = "calls")
 public class CallData {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private long callId;
+    @Column(name = "id")
+    private Long id;
 
     private boolean isEasy;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
     private long callDelay;
-    private Timestamp arrivalTime;
-    private Timestamp pickupTime;
-    private Timestamp closingTime;
+    private Instant arrivalTime;
+    private Instant pickupTime;
+    private Instant closingTime;
     private boolean isBounced = false;
     private boolean isSolved = false;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "workerDetails_id", referencedColumnName = "id")
     private WorkerDetails workerDetails;
 
     private int workers;
 
     private String simulationId;
-    private Timestamp simulationStartTime;
+    private Instant simulationStartTime;
 
     public Customer getCustomer() {
         return customer;
@@ -42,51 +49,51 @@ public class CallData {
         this.customer = customer;
     }
 
-    public Timestamp getArrivalTime() {
+    public Instant getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(Timestamp arrivalTime) {
+    public void setArrivalTime(Instant arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public Timestamp getPickupTime() {
+    public Instant getPickupTime() {
         return pickupTime;
     }
 
-    public void setPickupTime(Timestamp pickupTime) {
+    public void setPickupTime(Instant pickupTime) {
         this.pickupTime = pickupTime;
     }
 
-    public Timestamp getClosingTime() {
+    public Instant getClosingTime() {
         return closingTime;
     }
 
-    public void setClosingTime(Timestamp closingTime) {
+    public void setClosingTime(Instant closingTime) {
         this.closingTime = closingTime;
     }
 
-    public boolean isEasy() {
+    public boolean getIsEasy() {
         return isEasy;
     }
 
-    public void setEasy(boolean easy) {
+    public void setIsEasy(boolean easy) {
         isEasy = easy;
     }
 
-    public boolean isBounced() {
+    public boolean getIsBounced() {
         return isBounced;
     }
 
-    public void setBounced(boolean bounced) {
+    public void setIsBounced(boolean bounced) {
         isBounced = bounced;
     }
 
-    public boolean isSolved() {
+    public boolean getIsSolved() {
         return isSolved;
     }
 
-    public void setSolved(boolean solved) {
+    public void setIsSolved(boolean solved) {
         isSolved = solved;
     }
 
@@ -98,11 +105,11 @@ public class CallData {
         this.simulationId = simulationId;
     }
 
-    public Timestamp getSimulationStartTime() {
+    public Instant getSimulationStartTime() {
         return simulationStartTime;
     }
 
-    public void setSimulationStartTime(Timestamp simulationStartTime) {
+    public void setSimulationStartTime(Instant simulationStartTime) {
         this.simulationStartTime = simulationStartTime;
     }
 

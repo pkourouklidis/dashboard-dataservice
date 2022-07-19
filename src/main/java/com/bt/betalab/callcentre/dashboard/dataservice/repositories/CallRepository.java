@@ -9,7 +9,6 @@ package com.bt.betalab.callcentre.dashboard.dataservice.repositories;
 import com.bt.betalab.callcentre.dashboard.dataservice.api.CallData;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,9 +16,10 @@ import java.util.List;
 @Repository
 public interface CallRepository extends CrudRepository<CallData, String> {
 
-    @Query("SELECT * FROM CALLS WHERE DISTINCT p.simulationId")
-    public List<CallData> findFirstSimulationCalls();
+    @Query("select cd from CallData cd")
+    public List<CallData> findAllCalls();
+    
+    public List<CallData> findCallsBySimulationIdOrderByArrivalTimeAsc(String simulationId);
 
-    @Query("SELECT * FROM CALLS WHERE p.simulationId = :#{#id} ORDER BY p.arrivalTime")
-    public List<CallData> findCallsForSimulation(@Param("id") String id);
+    public boolean existsBySimulationId(String id);
 }
