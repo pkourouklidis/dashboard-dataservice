@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class DataServiceController {
@@ -36,7 +37,7 @@ public class DataServiceController {
     }
 
     @GetMapping(produces = "application/json", value = "api/v1/simulation/{id}")
-    public ResponseEntity<SimulationData> getSimulationData(@PathVariable String id, @RequestParam int count)  {
+    public ResponseEntity<SimulationData> getSimulationData(@PathVariable String id, @RequestParam Optional<Integer> count)  {
         try {
             if (service.simulationExists(id)) {
                 return ResponseEntity.ok(service.getSimulationData(id, count));

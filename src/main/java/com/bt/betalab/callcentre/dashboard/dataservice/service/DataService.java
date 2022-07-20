@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class DataService {
@@ -58,7 +55,7 @@ public class DataService {
         repo.save(request);
     }
 
-    public SimulationData getSimulationData(String id, int count) throws DataServiceException {
+    public SimulationData getSimulationData(String id, Optional<Integer> count) throws DataServiceException {
         SimulationData simulationData = new SimulationData();
         List<CallData> calls = repo.findCallsBySimulationIdOrderByArrivalTimeAsc(id);
         long waitTimeSum = 0;
@@ -110,13 +107,21 @@ public class DataService {
             if (call.getIsEasy()) { easySum++; };
         }
 
-        if (count < calls.size()) { simulationData.setCalls(calls.subList(calls.size()-count-1, calls.size()-1)); }
+        if (count.isPresent()) {
+            if (count.get() < calls.size()) {
+                simulationData.setCalls(calls.subList(calls.size() - count.get() - 1, calls.size() - 1));
+            }
+            else {
+                simulationData.setCalls(calls);
+            }
+        } else {
+            simulationData.setCalls(calls);
+        }
         simulationData.setAverageWaitTime(waitTimeSum / (long)calls.size());
         simulationData.setAverageServiceTime(serviceTimeSum / (long)calls.size());
         simulationData.setAveragePredictedHappiness((long)predictedHappySum / (long)calls.size());
         simulationData.setAverageActualHappiness((long)actualHappySum / (long)calls.size());
         simulationData.setEasyFraction((long)easySum / (long)calls.size());
-        simulationData.setCalls(calls);
         return simulationData;
     }
 

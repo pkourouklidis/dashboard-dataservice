@@ -18,7 +18,7 @@ public interface CallRepository extends CrudRepository<CallData, String> {
 
     @Query("select cd from CallData cd")
     public List<CallData> findAllCalls();
-    
+
     public List<CallData> findCallsBySimulationIdOrderByArrivalTimeAsc(String simulationId);
 
     public boolean existsBySimulationId(String id);
