@@ -7,6 +7,7 @@ variables:
   KUBERNETES_NAMESPACE: "project-callcentre"
 
 before_script:
+  - export TEST_PROFILE_NAME=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:=unstable}
   - export CI_MERGE_REQUEST_TARGET_BRANCH_NAME=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:=$CI_COMMIT_REF_NAME}
 
 stages:
@@ -16,11 +17,17 @@ build:
   image: maven:3.8-amazoncorretto-17
   stage: build
   script:
-    - mvn -Dbranch=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME clean compile package com.google.cloud.tools:jib-maven-plugin:3.2.1:build -Dimage=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME-$PROJECT_COMPONENT:$CI_COMMIT_SHA -Djib.to.auth.username=$DOCKER_REGISTRY_USER -Djib.to.auth.password=$DOCKER_REGISTRY_PASSWORD -Djib.allowInsecureRegistries=true
-  artifacts:
-    paths:
-      - target/
-    expire_in: 1 week
-  only:
-    - master
-    - release
+    - mvn -Dbranch=$TEST_PROFILE_NAME clean compile package
+  rules:
+    - if: $CI_COMMIT_TAG =~ /v[0-9]+\.[0-9]+\.[0-9]+/
+      when: never
+
+release-build:
+  image: maven:3.8-amazoncorretto-17
+  stage: build
+  script:
+    - mvn -Dbranch=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME clean compile package com.google.cloud.tools:jib-maven-plugin:3.2.1:build -Dimage=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME-$PROJECT_COMPONENT:$CI_COMMIT_TAG -Djib.to.auth.username=$DOCKER_REGISTRY_USER -Djib.to.auth.password=$DOCKER_REGISTRY_PASSWORD -Djib.allowInsecureRegistries=true
+  rules:
+    - if: $CI_COMMIT_TAG =~ /v[0-9]+\.[0-9]+\.[0-9]+/
+      when: always
+    - when: never
