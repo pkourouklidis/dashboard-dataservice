@@ -11,18 +11,15 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "calls")
 public class CallData {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    private Integer id;
 
     private boolean isEasy;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
     private long callDelay;
@@ -33,7 +30,6 @@ public class CallData {
     private boolean isSolved = false;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "workerDetails_id", referencedColumnName = "id")
     private WorkerDetails workerDetails;
 
     private int workers;

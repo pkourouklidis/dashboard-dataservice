@@ -10,13 +10,11 @@ package com.bt.betalab.callcentre.dashboard.dataservice.api;
 import javax.persistence.*;
 
 @Entity
-@Table(name="workerdetails")
 public class WorkerDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    private Integer id;
 
     @OneToOne(mappedBy = "workerDetails")
     private CallData callData;
