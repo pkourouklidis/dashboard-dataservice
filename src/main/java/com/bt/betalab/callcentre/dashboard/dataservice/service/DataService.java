@@ -84,7 +84,7 @@ public class DataService {
             if (simulationData.getLongestWaitTime() < waitTime ) {
                 simulationData.setLongestWaitTime(waitTime);
             }
-            if (simulationData.getShortestWaitTime() == 0 || simulationData.getShortestWaitTime() < waitTime ) {
+            if (simulationData.getShortestWaitTime() == 0 || simulationData.getShortestWaitTime() > waitTime ) {
                 simulationData.setShortestWaitTime(waitTime);
             }
 
@@ -93,7 +93,7 @@ public class DataService {
             if (simulationData.getLongestServiceTime() < serviceTime ) {
                 simulationData.setLongestServiceTime(serviceTime);
             }
-            if (simulationData.getShortestServiceTime() == 0 || simulationData.getShortestServiceTime() < serviceTime ) {
+            if (simulationData.getShortestServiceTime() == 0 || simulationData.getShortestServiceTime() > serviceTime ) {
                 simulationData.setShortestServiceTime(serviceTime);
             }
 
