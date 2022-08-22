@@ -81,19 +81,21 @@ public class DataService {
 
             long waitTime = Duration.between(call.getArrivalTime(), call.getPickupTime()).getSeconds();
             waitTimeSum += waitTime;
-            if (simulationData.getLongestWaitTime() < waitTime ) {
+
+
+            if (simulationData.getLongestWaitTime() < waitTime) {
                 simulationData.setLongestWaitTime(waitTime);
             }
-            if (simulationData.getShortestWaitTime() == 0 || simulationData.getShortestWaitTime() > waitTime ) {
+            if (simulationData.getShortestWaitTime() == 0 || simulationData.getShortestWaitTime() > waitTime) {
                 simulationData.setShortestWaitTime(waitTime);
             }
 
             long serviceTime = Duration.between(call.getPickupTime(), call.getClosingTime()).getSeconds();
             serviceTimeSum += serviceTime;
-            if (simulationData.getLongestServiceTime() < serviceTime ) {
+            if (simulationData.getLongestServiceTime() < serviceTime) {
                 simulationData.setLongestServiceTime(serviceTime);
             }
-            if (simulationData.getShortestServiceTime() == 0 || simulationData.getShortestServiceTime() > serviceTime ) {
+            if (simulationData.getShortestServiceTime() == 0 || simulationData.getShortestServiceTime() > serviceTime) {
                 simulationData.setShortestServiceTime(serviceTime);
             }
 
@@ -122,6 +124,13 @@ public class DataService {
         simulationData.setAveragePredictedHappiness((long)predictedHappySum / (long)calls.size());
         simulationData.setAverageActualHappiness((long)actualHappySum / (long)calls.size());
         simulationData.setEasyFraction((long)easySum / (long)calls.size());
+
+        simulationData.setOverallWaitTime(waitTimeSum);
+        simulationData.setOverallServiceTime(serviceTimeSum);
+        simulationData.setPredictedHappinessSum(predictedHappySum);
+        simulationData.setActualHappinessSum(actualHappySum);
+        simulationData.setEasySum(easySum);
+
         return simulationData;
     }
 

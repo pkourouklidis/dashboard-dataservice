@@ -21,16 +21,24 @@ public class SimulationData {
 
     private int unresolvedCalls = 0;
     private long callDelay = 0;
+
+    private long overallWaitTime = 0;
     private long averageWaitTime = 0;
     private long longestWaitTime = 0;
     private long shortestWaitTime = 0;
 
+    private long overallServiceTime = 0;
     private long averageServiceTime = 0;
     private long longestServiceTime = 0;
     private long shortestServiceTime = 0;
+
+    private long predictedHappinessSum = 0;
     private long averagePredictedHappiness = 0;
+
+    private long actualHappinessSum = 0;
     private long averageActualHappiness = 0;
 
+    private long easySum = 0;
     private long easyFraction = 0;
     private List<CallData> calls;
 
@@ -176,5 +184,45 @@ public class SimulationData {
 
     public void setEasyFraction(long easyFraction) {
         this.easyFraction = easyFraction;
+    }
+
+    public long getOverallWaitTime() {
+        return overallWaitTime;
+    }
+
+    public void setOverallWaitTime(long overallWaitTime) {
+        this.overallWaitTime = overallWaitTime;
+    }
+
+    public long getOverallServiceTime() {
+        return overallServiceTime;
+    }
+
+    public void setOverallServiceTime(long overallServiceTime) {
+        this.overallServiceTime = overallServiceTime;
+    }
+
+    public long getPredictedHappinessSum() {
+        return predictedHappinessSum;
+    }
+
+    public void setPredictedHappinessSum(long predictedHappinessSum) {
+        this.predictedHappinessSum = predictedHappinessSum;
+    }
+
+    public long getActualHappinessSum() {
+        return actualHappinessSum;
+    }
+
+    public void setActualHappinessSum(long actualHappinessSum) {
+        this.actualHappinessSum = actualHappinessSum;
+    }
+
+    public long getEasySum() {
+        return easySum;
+    }
+
+    public void setEasySum(long easySum) {
+        this.easySum = easySum;
     }
 }
