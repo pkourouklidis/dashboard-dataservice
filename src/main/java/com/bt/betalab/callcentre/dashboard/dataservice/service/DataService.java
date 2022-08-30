@@ -20,7 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.persistence.Tuple;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -134,8 +136,14 @@ public class DataService {
         return simulationData;
     }
 
-    public List<Object> getSimulations() throws DataServiceException {
-        return repo.findDistinctSimulationId();
+    public List<SimulationSummary> getSimulations() throws DataServiceException {
+        ArrayList<SimulationSummary> result = new ArrayList<>();
+        List<Tuple> resultTuples = repo.findDistinctSimulationId();
+        for(Tuple tuple : resultTuples) {
+            SimulationSummary summary = new SimulationSummary((String)tuple.get(0), (Instant) tuple.get(1));
+            result.add(summary);
+        }
+        return result;
     }
 
     public boolean simulationExists(String id) {

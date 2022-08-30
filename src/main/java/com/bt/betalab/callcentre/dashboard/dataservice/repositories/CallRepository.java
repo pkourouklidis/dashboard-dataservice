@@ -11,13 +11,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Tuple;
 import java.util.List;
 
 @Repository
 public interface CallRepository extends CrudRepository<CallData, String> {
 
-    @Query("SELECT DISTINCT a.simulationId, a.simulationStartTime FROM CallData a")
-    public List<Object> findDistinctSimulationId();
+    @Query("SELECT Distinct a.simulationId, a.simulationStartTime FROM CallData a")
+    public List<Tuple> findDistinctSimulationId();
+
+//    @Query("SELECT DISTINCT a.simulationId, a.simulationStartTime FROM CallData a")
+//    public List<SimulationSummary> findDistinctSimulationId();
 
     public List<CallData> findCallsBySimulationIdOrderByArrivalTimeAsc(String simulationId);
 

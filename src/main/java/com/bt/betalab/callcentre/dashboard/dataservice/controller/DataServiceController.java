@@ -49,8 +49,9 @@ public class DataServiceController {
     }
 
     @GetMapping(produces = "application/json", value = "api/v1/simulation")
-    public ResponseEntity<List<Object>> getSimulations()  {
+    public ResponseEntity<List<SimulationSummary>> getSimulations()  {
         try {
+            List<SimulationSummary> temp = service.getSimulations();
             return ResponseEntity.ok(service.getSimulations());
         } catch (DataServiceException e) {
             return ResponseEntity.internalServerError().build();

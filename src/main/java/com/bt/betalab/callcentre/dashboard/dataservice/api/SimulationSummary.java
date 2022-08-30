@@ -7,12 +7,17 @@
 
 package com.bt.betalab.callcentre.dashboard.dataservice.api;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 
 public class SimulationSummary {
     private String simulationId;
+
     private Instant simulationStartTime;
+
+    public SimulationSummary(String simulationId, Instant simulationStartTime) {
+        this.simulationId = simulationId;
+        this.simulationStartTime = simulationStartTime;
+    }
 
     public String getSimulationId() {
         return simulationId;
