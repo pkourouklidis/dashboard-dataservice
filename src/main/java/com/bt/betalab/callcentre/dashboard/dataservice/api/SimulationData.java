@@ -20,26 +20,26 @@ public class SimulationData {
     private int resolvedCalls = 0;
 
     private int unresolvedCalls = 0;
-    private long callDelay = 0;
+    private float callDelay = 0;
 
-    private long overallWaitTime = 0;
-    private long averageWaitTime = 0;
-    private long longestWaitTime = 0;
-    private long shortestWaitTime = 0;
+    private float overallWaitTime = 0;
+    private float averageWaitTime = 0;
+    private float longestWaitTime = 0;
+    private float shortestWaitTime = 0;
 
-    private long overallServiceTime = 0;
-    private long averageServiceTime = 0;
-    private long longestServiceTime = 0;
-    private long shortestServiceTime = 0;
+    private float overallServiceTime = 0;
+    private float averageServiceTime = 0;
+    private float longestServiceTime = 0;
+    private float shortestServiceTime = 0;
 
-    private long predictedHappinessSum = 0;
-    private long averagePredictedHappiness = 0;
+    private float predictedHappinessSum = 0;
+    private float averagePredictedHappiness = 0;
 
-    private long actualHappinessSum = 0;
-    private long averageActualHappiness = 0;
+    private float actualHappinessSum = 0;
+    private float averageActualHappiness = 0;
 
-    private long easySum = 0;
-    private long easyFraction = 0;
+    private float easySum = 0;
+    private float easyFraction = 0;
     private List<CallData> calls;
 
     public String getSimulationId() {
@@ -98,51 +98,51 @@ public class SimulationData {
         this.unresolvedCalls = unresolvedCalls;
     }
 
-    public long getCallDelay() {
+    public float getCallDelay() {
         return callDelay;
     }
 
-    public void setCallDelay(long callDelay) {
+    public void setCallDelay(float callDelay) {
         this.callDelay = callDelay;
     }
 
-    public long getAverageWaitTime() {
+    public float getAverageWaitTime() {
         return averageWaitTime;
     }
 
-    public void setAverageWaitTime(long averageWaitTime) {
+    public void setAverageWaitTime(float averageWaitTime) {
         this.averageWaitTime = averageWaitTime;
     }
 
-    public long getLongestWaitTime() {
+    public float getLongestWaitTime() {
         return longestWaitTime;
     }
 
-    public void setLongestWaitTime(long longestWaitTime) {
+    public void setLongestWaitTime(float longestWaitTime) {
         this.longestWaitTime = longestWaitTime;
     }
 
-    public long getShortestWaitTime() {
+    public float getShortestWaitTime() {
         return shortestWaitTime;
     }
 
-    public void setShortestWaitTime(long shortestWaitTime) {
+    public void setShortestWaitTime(float shortestWaitTime) {
         this.shortestWaitTime = shortestWaitTime;
     }
 
-    public long getAveragePredictedHappiness() {
+    public float getAveragePredictedHappiness() {
         return averagePredictedHappiness;
     }
 
-    public void setAveragePredictedHappiness(long averagePredictedHappiness) {
+    public void setAveragePredictedHappiness(float averagePredictedHappiness) {
         this.averagePredictedHappiness = averagePredictedHappiness;
     }
 
-    public long getAverageActualHappiness() {
+    public float getAverageActualHappiness() {
         return averageActualHappiness;
     }
 
-    public void setAverageActualHappiness(long averageActualHappiness) {
+    public void setAverageActualHappiness(float averageActualHappiness) {
         this.averageActualHappiness = averageActualHappiness;
     }
 
@@ -154,75 +154,75 @@ public class SimulationData {
         this.calls = calls;
     }
 
-    public long getAverageServiceTime() {
+    public float getAverageServiceTime() {
         return averageServiceTime;
     }
 
-    public void setAverageServiceTime(long averageServiceTime) {
+    public void setAverageServiceTime(float averageServiceTime) {
         this.averageServiceTime = averageServiceTime;
     }
 
-    public long getLongestServiceTime() {
+    public float getLongestServiceTime() {
         return longestServiceTime;
     }
 
-    public void setLongestServiceTime(long longestServiceTime) {
+    public void setLongestServiceTime(float longestServiceTime) {
         this.longestServiceTime = longestServiceTime;
     }
 
-    public long getShortestServiceTime() {
+    public float getShortestServiceTime() {
         return shortestServiceTime;
     }
 
-    public void setShortestServiceTime(long shortestServiceTime) {
+    public void setShortestServiceTime(float shortestServiceTime) {
         this.shortestServiceTime = shortestServiceTime;
     }
 
-    public long getEasyFraction() {
+    public float getEasyFraction() {
         return easyFraction;
     }
 
-    public void setEasyFraction(long easyFraction) {
+    public void setEasyFraction(float easyFraction) {
         this.easyFraction = easyFraction;
     }
 
-    public long getOverallWaitTime() {
+    public float getOverallWaitTime() {
         return overallWaitTime;
     }
 
-    public void setOverallWaitTime(long overallWaitTime) {
+    public void setOverallWaitTime(float overallWaitTime) {
         this.overallWaitTime = overallWaitTime;
     }
 
-    public long getOverallServiceTime() {
+    public float getOverallServiceTime() {
         return overallServiceTime;
     }
 
-    public void setOverallServiceTime(long overallServiceTime) {
+    public void setOverallServiceTime(float overallServiceTime) {
         this.overallServiceTime = overallServiceTime;
     }
 
-    public long getPredictedHappinessSum() {
+    public float getPredictedHappinessSum() {
         return predictedHappinessSum;
     }
 
-    public void setPredictedHappinessSum(long predictedHappinessSum) {
+    public void setPredictedHappinessSum(float predictedHappinessSum) {
         this.predictedHappinessSum = predictedHappinessSum;
     }
 
-    public long getActualHappinessSum() {
+    public float getActualHappinessSum() {
         return actualHappinessSum;
     }
 
-    public void setActualHappinessSum(long actualHappinessSum) {
+    public void setActualHappinessSum(float actualHappinessSum) {
         this.actualHappinessSum = actualHappinessSum;
     }
 
-    public long getEasySum() {
+    public float getEasySum() {
         return easySum;
     }
 
-    public void setEasySum(long easySum) {
+    public void setEasySum(float easySum) {
         this.easySum = easySum;
     }
 }

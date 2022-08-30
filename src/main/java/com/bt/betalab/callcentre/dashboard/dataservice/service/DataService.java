@@ -119,11 +119,11 @@ public class DataService {
         } else {
             simulationData.setCalls(calls);
         }
-        simulationData.setAverageWaitTime(waitTimeSum / (long)calls.size());
-        simulationData.setAverageServiceTime(serviceTimeSum / (long)calls.size());
-        simulationData.setAveragePredictedHappiness((long)predictedHappySum / (long)calls.size());
-        simulationData.setAverageActualHappiness((long)actualHappySum / (long)calls.size());
-        simulationData.setEasyFraction((long)easySum / (long)calls.size());
+        simulationData.setAverageWaitTime(Float.valueOf(waitTimeSum) / Float.valueOf(calls.size()));
+        simulationData.setAverageServiceTime(Float.valueOf(serviceTimeSum) / Float.valueOf(calls.size()));
+        simulationData.setAveragePredictedHappiness(Float.valueOf(predictedHappySum) / Float.valueOf(calls.size()));
+        simulationData.setAverageActualHappiness(Float.valueOf(actualHappySum) / Float.valueOf(calls.size()));
+        simulationData.setEasyFraction(Float.valueOf(easySum) / Float.valueOf(calls.size()));
 
         simulationData.setOverallWaitTime(waitTimeSum);
         simulationData.setOverallServiceTime(serviceTimeSum);
