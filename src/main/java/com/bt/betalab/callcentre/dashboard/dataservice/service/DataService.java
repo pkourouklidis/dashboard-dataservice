@@ -110,8 +110,8 @@ public class DataService {
         }
 
         if (count.isPresent()) {
-            if (count.get() < calls.size()) {
-                simulationData.setCalls(calls.subList(calls.size() - count.get() - 1, calls.size() - 1));
+            if (count.get() <= calls.size()) {
+                simulationData.setCalls(calls.subList(calls.size() - count.get(), calls.size()));
             }
             else {
                 simulationData.setCalls(calls);
