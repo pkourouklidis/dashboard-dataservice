@@ -134,22 +134,8 @@ public class DataService {
         return simulationData;
     }
 
-    public List<SimulationSummary> getSimulations() throws DataServiceException {
-        List<CallData> allCalls = repo.findAllCalls();
-        List<SimulationSummary> summaries = new ArrayList<>();
-        Set<String> uniqueIds = new HashSet<>();
-
-        for (CallData call: allCalls) {
-            if (!uniqueIds.contains(call.getSimulationId())) {
-                SimulationSummary summary = new SimulationSummary();
-                summary.setSimulationId(call.getSimulationId());
-                summary.setSimulationStartTime(call.getSimulationStartTime());
-                summaries.add(summary);
-                uniqueIds.add(call.getSimulationId());
-            }
-        }
-
-        return summaries;
+    public List<Object> getSimulations() throws DataServiceException {
+        return repo.findDistinctSimulationId();
     }
 
     public boolean simulationExists(String id) {

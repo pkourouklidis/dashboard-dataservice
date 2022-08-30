@@ -16,8 +16,8 @@ import java.util.List;
 @Repository
 public interface CallRepository extends CrudRepository<CallData, String> {
 
-    @Query("select cd from CallData cd")
-    public List<CallData> findAllCalls();
+    @Query("SELECT DISTINCT a.simulationId, a.simulationStartTime FROM CallData a")
+    public List<Object> findDistinctSimulationId();
 
     public List<CallData> findCallsBySimulationIdOrderByArrivalTimeAsc(String simulationId);
 

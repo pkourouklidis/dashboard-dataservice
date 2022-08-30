@@ -49,7 +49,7 @@ public class DataServiceController {
     }
 
     @GetMapping(produces = "application/json", value = "api/v1/simulation")
-    public ResponseEntity<List<SimulationSummary>> getSimulations()  {
+    public ResponseEntity<List<Object>> getSimulations()  {
         try {
             return ResponseEntity.ok(service.getSimulations());
         } catch (DataServiceException e) {
