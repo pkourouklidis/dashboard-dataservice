@@ -4,7 +4,6 @@
  * Copyright (c) British Telecommunications plc 2022
  **/
 
-
 package com.bt.betalab.callcentre.dashboard.dataservice.service;
 
 import com.bt.betalab.callcentre.dashboard.dataservice.api.*;
@@ -19,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import javax.persistence.Tuple;
 import java.time.Duration;
@@ -39,22 +39,25 @@ public class DataService {
     public void reportCallData(CallData request) throws DataServiceException {
         Duration waitDuration = Duration.between(request.getArrivalTime(), request.getPickupTime());
         Duration serviceDuration = Duration.between(request.getPickupTime(), request.getClosingTime());
-        CustomerPredictionRequest predictionRequest = new CustomerPredictionRequest(waitDuration.getSeconds(), serviceDuration.getSeconds());
+        CustomerPredictionRequest predictionRequest = new CustomerPredictionRequest(waitDuration.getSeconds(),
+                serviceDuration.getSeconds());
         WebClient webClient = clientFactory.generateWebClient(config.getAiServiceUrl());
-        ResponseEntity<CustomerPrediction> reply = webClient
-                .post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(predictionRequest)
-                .retrieve()
-                .toEntity(CustomerPrediction.class)
-                .block();
-
-        if (!reply.getStatusCode().is2xxSuccessful()) {
-            Logger.log("Failed to communicate with ai service backend. Error code: " + reply.getStatusCodeValue(), LogLevel.ERROR);
+        try {
+            ResponseEntity<CustomerPrediction> reply = webClient
+                    .post()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(predictionRequest)
+                    .retrieve()
+                    .toEntity(CustomerPrediction.class)
+                    .block();
+            request.getCustomer().setIsPredictedToBeHappy(reply.getBody().isHappy());
+            repo.save(request);
+        } catch (WebClientResponseException e) {
+            Logger.log("Failed to communicate with ai service backend. Error code: " + e.getRawStatusCode(),
+                    LogLevel.ERROR);
             throw new DataServiceException();
         }
-        request.getCustomer().setIsPredictedToBeHappy(reply.getBody().isHappy());
-        repo.save(request);
+
     }
 
     public SimulationData getSimulationData(String id, Optional<Integer> count) throws DataServiceException {
@@ -72,18 +75,17 @@ public class DataService {
         simulationData.setTotalCalls(calls.size());
         simulationData.setWorkers(calls.get(0).getWorkers());
 
-        for (CallData call: calls) {
+        for (CallData call : calls) {
             if (call.getIsBounced()) {
-                simulationData.setBouncedCalls(simulationData.getBouncedCalls()+1);
+                simulationData.setBouncedCalls(simulationData.getBouncedCalls() + 1);
             } else if (call.getIsSolved()) {
-                simulationData.setResolvedCalls(simulationData.getResolvedCalls()+1);
+                simulationData.setResolvedCalls(simulationData.getResolvedCalls() + 1);
             } else {
-                simulationData.setUnresolvedCalls(simulationData.getUnresolvedCalls()+1);
+                simulationData.setUnresolvedCalls(simulationData.getUnresolvedCalls() + 1);
             }
 
             long waitTime = Duration.between(call.getArrivalTime(), call.getPickupTime()).getSeconds();
             waitTimeSum += waitTime;
-
 
             if (simulationData.getLongestWaitTime() < waitTime) {
                 simulationData.setLongestWaitTime(waitTime);
@@ -108,14 +110,16 @@ public class DataService {
                 actualHappySum++;
             }
 
-            if (call.getIsEasy()) { easySum++; };
+            if (call.getIsEasy()) {
+                easySum++;
+            }
+            ;
         }
 
         if (count.isPresent()) {
             if (count.get() <= calls.size()) {
                 simulationData.setCalls(calls.subList(calls.size() - count.get(), calls.size()));
-            }
-            else {
+            } else {
                 simulationData.setCalls(calls);
             }
         } else {
@@ -139,8 +143,8 @@ public class DataService {
     public List<SimulationSummary> getSimulations() throws DataServiceException {
         ArrayList<SimulationSummary> result = new ArrayList<>();
         List<Tuple> resultTuples = repo.findDistinctSimulationId();
-        for(Tuple tuple : resultTuples) {
-            SimulationSummary summary = new SimulationSummary((String)tuple.get(0), (Instant) tuple.get(1));
+        for (Tuple tuple : resultTuples) {
+            SimulationSummary summary = new SimulationSummary((String) tuple.get(0), (Instant) tuple.get(1));
             result.add(summary);
         }
         return result;
