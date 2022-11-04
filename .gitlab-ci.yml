@@ -42,7 +42,7 @@ native-package:
   stage: package
   script:
   - echo "{\"auths\":{\"https://registry.docker.nat.bt.com\":{\"username\":\"$DOCKER_REGISTRY_USER\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-  - /kaniko/executor --cache=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME:latest --destination=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME:$CI_COMMIT_SHA
+  - /kaniko/executor --cache=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME-$PROJECT_COMPONENT:$CI_COMMIT_TAG
   rules:
     - if: $CI_COMMIT_TAG =~ /v[0-9]+\.[0-9]+\.[0-9]+/
       when: always
