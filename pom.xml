@@ -15,44 +15,66 @@
 	<description>Data service for the Call Centre dashboard</description>
 	<properties>
 		<java.version>17</java.version>
+		<repackage.classifier/>
+		<spring-native.version>0.12.1</spring-native.version>
 	</properties>
 
 	<profiles>
 		<profile>
-			<id>active-by-default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<coverage.line>0.0</coverage.line>
-				<coverage.branch>0.0</coverage.branch>
-			</properties>
+			<id>local</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-devtools</artifactId>
+					<scope>runtime</scope>
+					<optional>true</optional>
+				</dependency>
+			</dependencies>
 		</profile>
 		<profile>
-			<id>master-branch</id>
-			<activation>
-				<property>
-					<name>branch</name>
-					<value>master</value>
-				</property>
-			</activation>
+			<id>native</id>
 			<properties>
-				<coverage.line>0.0</coverage.line>
-				<coverage.branch>0.0</coverage.branch>
+				<repackage.classifier>exec</repackage.classifier>
+				<native-buildtools.version>0.9.13</native-buildtools.version>
 			</properties>
-		</profile>
-		<profile>
-			<id>release-branch</id>
-			<activation>
-				<property>
-					<name>branch</name>
-					<value>release</value>
-				</property>
-			</activation>
-			<properties>
-				<coverage.line>0.0</coverage.line>
-				<coverage.branch>0.0</coverage.branch>
-			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.junit.platform</groupId>
+					<artifactId>junit-platform-launcher</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
+						<version>${native-buildtools.version}</version>
+						<extensions>true</extensions>
+						<executions>
+							<execution>
+								<id>test-native</id>
+								<phase>test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>build-native</id>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<buildArgs>
+								<buildArg>--static --libc=musl</buildArg>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
@@ -72,6 +94,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.experimental</groupId>
+			<artifactId>spring-native</artifactId>
+			<version>${spring-native.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -123,8 +157,56 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<classifier>${repackage.classifier}</classifier>
+					<image>
+						<builder>paketobuildpacks/builder:tiny</builder>
+						<env>
+							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+						</env>
+					</image>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.experimental</groupId>
+				<artifactId>spring-aot-maven-plugin</artifactId>
+				<version>${spring-native.version}</version>
+				<executions>
+					<execution>
+						<id>test-generate</id>
+						<goals>
+							<goal>test-generate</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>
