@@ -13,9 +13,10 @@ public class PredictionInput {
     private String datatype = "INT32";
     private int[] data = new int[2];
 
-    public PredictionInput(int waitDuration, int serviceDuration) {
+    public PredictionInput(int waitDuration, int serviceDuration, int isSolved) {
         data[0] = waitDuration;
         data[1] = serviceDuration;
+        data[2] = isSolved;
     }
 
     public String getName() {

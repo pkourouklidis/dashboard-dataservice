@@ -13,6 +13,8 @@ import com.bt.betalab.callcentre.dashboard.dataservice.logging.LogLevel;
 import com.bt.betalab.callcentre.dashboard.dataservice.logging.Logger;
 import com.bt.betalab.callcentre.dashboard.dataservice.messaging.WebClientFactory;
 import com.bt.betalab.callcentre.dashboard.dataservice.repositories.CallRepository;
+import com.bt.betalab.dasboardservice.api.CallData;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +41,9 @@ public class DataService {
     public void reportCallData(CallData request) throws DataServiceException {
         Duration waitDuration = Duration.between(request.getArrivalTime(), request.getPickupTime());
         Duration serviceDuration = Duration.between(request.getPickupTime(), request.getClosingTime());
+        int isSolved = (int) request.getIsSolved();
         CustomerPredictionRequest predictionRequest = new CustomerPredictionRequest(waitDuration.getSeconds(),
-                serviceDuration.getSeconds());
+                serviceDuration.getSeconds(), isSolved);
         WebClient webClient = clientFactory.generateWebClient(config.getAiServiceUrl());
         try {
             ResponseEntity<CustomerPrediction> reply = webClient
