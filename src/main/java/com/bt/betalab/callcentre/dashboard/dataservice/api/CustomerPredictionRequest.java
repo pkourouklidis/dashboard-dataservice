@@ -18,8 +18,8 @@ public class CustomerPredictionRequest {
     private List<PredictionOutput> outputs = new ArrayList<>();
 
 
-    public CustomerPredictionRequest(long waitDuration, long serviceDuration) {
-        PredictionInput input = new PredictionInput((int)waitDuration, (int)serviceDuration);
+    public CustomerPredictionRequest(long waitDuration, long serviceDuration, int isSolved) {
+        PredictionInput input = new PredictionInput((int)waitDuration, (int)serviceDuration, isSolved);
         inputs.add(input);
 
         PredictionOutput output = new PredictionOutput();
