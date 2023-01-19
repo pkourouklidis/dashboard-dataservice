@@ -12,22 +12,37 @@ before_script:
 
 stages:
   - build
+  - package
 
 build:
   image: maven:3.8-amazoncorretto-17
   stage: build
   script:
-    - mvn -Dbranch=$TEST_PROFILE_NAME clean compile package
+    - mvn clean compile package
   rules:
     - if: $CI_COMMIT_TAG =~ /v[0-9]+\.[0-9]+\.[0-9]+/
       when: never
     - when: on_success
 
-release-build:
-  image: maven:3.8-amazoncorretto-17
+native-build:
+  image: registry.docker.nat.bt.com/betalab-build-tools/maven-graalvm-17-native
   stage: build
   script:
-    - mvn -Dbranch=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME clean compile package com.google.cloud.tools:jib-maven-plugin:3.2.1:build -Dimage=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME-$PROJECT_COMPONENT:$CI_COMMIT_TAG -Djib.to.auth.username=$DOCKER_REGISTRY_USER -Djib.to.auth.password=$DOCKER_REGISTRY_PASSWORD -Djib.allowInsecureRegistries=true
+    - mvn -Pnative clean compile package
+  artifacts:
+    paths:
+      - target/dataservice
+  rules:
+    - if: $CI_COMMIT_TAG =~ /v[0-9]+\.[0-9]+\.[0-9]+/
+      when: always
+    - when: never
+
+native-package:
+  image: registry.docker.nat.bt.com/betalab-build-tools/bt-kaniko-build:latest
+  stage: package
+  script:
+  - echo "{\"auths\":{\"https://registry.docker.nat.bt.com\":{\"username\":\"$DOCKER_REGISTRY_USER\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+  - /kaniko/executor --cache=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination=registry.docker.nat.bt.com/$DOCKER_PROJECT_NAME/$PROJECT_NAME-$PROJECT_COMPONENT:$CI_COMMIT_TAG
   rules:
     - if: $CI_COMMIT_TAG =~ /v[0-9]+\.[0-9]+\.[0-9]+/
       when: always
