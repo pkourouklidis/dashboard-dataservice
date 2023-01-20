@@ -9,7 +9,7 @@ package com.bt.betalab.callcentre.dashboard.dataservice.api;
 
 public class PredictionInput {
     private String name = "input";
-    private int[] shape  = {1, 2};
+    private int[] shape  = {1, 3};
     private String datatype = "INT32";
     private int[] data = new int[3];
 
