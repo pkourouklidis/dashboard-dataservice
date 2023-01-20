@@ -11,7 +11,7 @@ public class PredictionInput {
     private String name = "input";
     private int[] shape  = {1, 2};
     private String datatype = "INT32";
-    private int[] data = new int[2];
+    private int[] data = new int[3];
 
     public PredictionInput(int waitDuration, int serviceDuration, int isSolved) {
         data[0] = waitDuration;
